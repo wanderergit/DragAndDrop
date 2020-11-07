@@ -91,8 +91,8 @@ imageRouter.route('/image/:filename')
             }
 
             if (files[0].contentType == 'image/jpeg'
-                || file.contentType === 'image/png'
-                || file.contentType === 'image/svg+xml'
+                || files[0].contentType === 'image/png'
+                || files[0].contentType === 'image/svg+xml'
             ) {
                 gfs.openDownloadsStreambyName(req.params.filename).pipe(res)
             } else {
