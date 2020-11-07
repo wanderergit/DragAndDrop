@@ -40,3 +40,11 @@ imageRouter.route('/').post(upload.single('file'), (req, res, next) => {
         })
         .catch(err => res.status(500).json(err));
 })
+
+imageRouter.route('/multiple')
+    .post(upload.array('file', 3), (req, res, next) => {
+        res.status(200).json({
+            success: true,
+            message: `${req.files.length} files uploaded successfully`,
+        });
+    });
