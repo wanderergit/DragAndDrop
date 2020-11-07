@@ -48,3 +48,31 @@ imageRouter.route('/multiple')
             message: `${req.files.length} files uploaded successfully`,
         });
     });
+
+imageRouter.route('/files')
+    .get((req, res, next) => {
+        gfs.find().toArray((err, files) => {
+            if (!files || files.length === 0) {
+                return res.status(200).json({
+                    success: false,
+                    message: 'No files available'
+                });
+            }
+
+            files.map(file => {
+                if (file.contentType === 'image/jpeg'
+                    || file.contentType === 'image/png'
+                    || file.contentType === 'image/svg+xml'
+                ) {
+                    file.isImage = true;
+                } else {
+                    files.isImage = false;
+                }
+            });
+
+            res.status(200).json({
+                success: true,
+                files,
+            });
+        });
+    });
