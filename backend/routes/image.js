@@ -76,3 +76,29 @@ imageRouter.route('/files')
             });
         });
     });
+
+
+// GET : Fetches  particular image and renders on the browser
+
+imageRouter.route('/image/:filename')
+    .get((req, res, next) => {
+        gfs.find({ filename: req.params.filename }).toArray((err, files) => {
+            if (!files[0] || files.length === 0) {
+                return res.status(200).json({
+                    success: false,
+                    message: 'No files available',
+                });
+            }
+
+            if (files[0].contentType == 'image/jpeg'
+                || file.contentType === 'image/png'
+                || file.contentType === 'image/svg+xml'
+            ) {
+                gfs.openDownloadsStreambyName(req.params.filename).pipe(res)
+            } else {
+                res.status(404).json({
+                    err: 'Not an image',
+                });
+            }
+        });
+    });
